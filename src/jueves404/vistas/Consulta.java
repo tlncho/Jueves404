@@ -5,7 +5,10 @@
  */
 package jueves404.vistas;
 
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import jueves404.entidades.Producto;
 
 /**
  *
@@ -13,11 +16,12 @@ import javax.swing.JOptionPane;
  */
 public class Consulta extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form Consulta
-     */
+    DefaultTableModel modelo=new DefaultTableModel();
+    ArrayList<Producto>lista=Menu.getProductos();
     public Consulta() {
         initComponents();
+        armarCabecera();
+        llenarCombo();
     }
 
     /**
@@ -30,52 +34,150 @@ public class Consulta extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jbMostrar = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jbEliminar = new javax.swing.JButton();
+        jcProductos = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jtTabla = new javax.swing.JTable();
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 255));
         jLabel1.setText("Buscar producto");
 
-        jbMostrar.setText("Saludar");
-        jbMostrar.addActionListener(new java.awt.event.ActionListener() {
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel2.setText("Elegir por categoria");
+
+        jbEliminar.setText("Eliminar");
+        jbEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbMostrarActionPerformed(evt);
+                jbEliminarActionPerformed(evt);
             }
         });
+
+        jcProductos.setBackground(new java.awt.Color(255, 255, 0));
+        jcProductos.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jcProductosItemStateChanged(evt);
+            }
+        });
+        jcProductos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcProductosActionPerformed(evt);
+            }
+        });
+
+        jtTabla.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jtTabla);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addGap(43, 43, 43)
+                .addComponent(jcProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(109, 109, 109)
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(160, 160, 160)
-                        .addComponent(jbMostrar)))
-                .addContainerGap(113, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jbEliminar)
+                .addGap(23, 23, 23))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addGap(57, 57, 57)
-                .addComponent(jbMostrar)
-                .addGap(0, 169, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jcProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jbEliminar)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jbMostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbMostrarActionPerformed
-       JOptionPane.showMessageDialog(this, "Hola");
-    }//GEN-LAST:event_jbMostrarActionPerformed
+    private void jcProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcProductosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jcProductosActionPerformed
 
+    private void jcProductosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcProductosItemStateChanged
+    borrarFilas();
+        
+     String categoria=(String)jcProductos.getSelectedItem();
+     for(Producto listas:lista){
+     if(listas.getCategoria().equals(categoria)){
+     modelo.addRow(new Object[]{
+         
+         listas.getDescripcion(),
+             listas.getPrecio(),
+             listas.getStock()
+             
+     });
+     }
+     }
+    }//GEN-LAST:event_jcProductosItemStateChanged
+
+    private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
+     int filas=jtTabla.getSelectedRow();
+     if(filas!=-1){
+     modelo.removeRow(filas);
+     for(Producto a:lista){
+     lista.remove(a);
+     }
+     }else{
+     JOptionPane.showMessageDialog(this, "Primero seeccione una fila");
+     }
+    }//GEN-LAST:event_jbEliminarActionPerformed
+public void llenarCombo(){
+jcProductos.addItem("Limpieza");
+jcProductos.addItem("Perfumeria");
+jcProductos.addItem("Comestible");
+}
+public void armarCabecera(){
+modelo.addColumn("Descripcion");
+modelo.addColumn("Precio");
+modelo.addColumn("Stock");
+jtTabla.setModel(modelo);
+
+}
+public void borrarFilas() {
+        // Eliminar todas las filas existentes
+        while (modelo.getRowCount() > 0) {
+            modelo.removeRow(0);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JButton jbMostrar;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton jbEliminar;
+    private javax.swing.JComboBox<String> jcProductos;
+    private javax.swing.JTable jtTabla;
     // End of variables declaration//GEN-END:variables
 }
