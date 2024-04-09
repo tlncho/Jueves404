@@ -71,6 +71,11 @@ private static ArrayList<Producto> productos=new ArrayList<>();
         jMenuBar1.add(jmProductos);
 
         jmSalir.setText("Salir");
+        jmSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmSalirActionPerformed(evt);
+            }
+        });
         jMenuBar1.add(jmSalir);
 
         setJMenuBar(jMenuBar1);
@@ -102,13 +107,18 @@ private static ArrayList<Producto> productos=new ArrayList<>();
     }//GEN-LAST:event_jmiAltaActionPerformed
 
     private void jmiConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiConsultaActionPerformed
-    escritorio.removeAll();
+  
+        escritorio.removeAll();
     escritorio.repaint();
     Consulta consulta=new Consulta();
     consulta.setVisible(true);
     escritorio.add(consulta);
     escritorio.moveToFront(consulta);
     }//GEN-LAST:event_jmiConsultaActionPerformed
+
+    private void jmSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmSalirActionPerformed
+    dispose();
+    }//GEN-LAST:event_jmSalirActionPerformed
 
     /**
      * @param args the command line arguments
